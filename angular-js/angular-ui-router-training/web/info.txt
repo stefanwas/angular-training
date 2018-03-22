@@ -1,0 +1,77 @@
+
+0. UI View
+
+to znacznik <ui-view></ui-view> lub <div ui-view></div> - co będzie kontenter do treści wstrzykniętych odpowiednio do stanu lub route
+
+ui-view może mieć nazwę:
+
+<div ui-view="header"></div>
+<div ui-view="footer"></div>
+<div ui-view></div>		// unnamed view
+
+jeżeli $state nie specyfikuję view wtedy jest przypisany do unnamed view
+
+
+SstateProvider.state('state1', {
+	url: '/state1',
+	templateUrl: 'state1.html',
+	controller: 'state1Ctrl'
+})
+
+powyższe jest równoznacze z:
+
+
+SstateProvider.state('state1', {
+	url: '/state1',
+	views: {
+		'' : {	//unnamed view
+			templateUrl: 'state1.html',
+			controller: 'state1Ctrl'
+		}
+	}
+})
+
+Widoków może być wiele na liśćie dla każdego stanu.
+Widoki mogą się powtarzać dla róznych stanów.
+Jeśli dla danego stanu widoku nie ma na liście to nie zostanie wyrenderowany.
+
+1. SstateProvider
+
+
+Rózne sposoby na definiowanie route (stanów aplikacji):
+
+zawsze używamy $stateProvider'a:.
+
+	$stateProvider.state(loginState);
+
+żeby zdefiniować nowy state.
+
+Gdzie template i controller można zdefiniować inline, lub podać nazwę controllera i lokalizacje template'u (templateUrl)
+
+Alternatywnie można użyć definicji komponentu (komponent łączy template i controller). Komponenty definiuje się na poziomie całego frameworka AngularJS
+
+
+2. $urlRouterProvider
+
+- można użyć do zdefiniowania domyślnego url (trafimy tu jeśli podany url nie odpowiada żadnemu innemu ze zdefiniowanych)
+$urlRouterProvider.otherwise('/'); <- ale dla tego url trzeba już definiować stan
+
+3. <a ui-sref="stateName({param1: value1, param2:value2})" /> --- 
+do parametrów dobierzemy sie w kontrolerze przy pomocy np. $stateParams.param1 itp.
+w
+
+
+4. $stateParams 
+- to powinien być najlepszy sposób dobrania się do parametrów stanu
+
+- paramtery te mogą być przekazywane na scieżce url: #/view1/:param1/:param2 lub #/view1/{param1}/{param2}
+
+5. params in state definition
+
+w definicji stanu podajemy dodatkowy atrybut 
+'params' :  {
+	a : {value : 10 },
+	b : {value : 100}
+}
+
+działa tylko ui-sref! Parametry te nie są widoczne w url
